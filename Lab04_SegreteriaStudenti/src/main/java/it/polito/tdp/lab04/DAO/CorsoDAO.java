@@ -3,6 +3,7 @@ package it.polito.tdp.lab04.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -135,6 +136,26 @@ public class CorsoDAO {
 			throw new RuntimeException("Errore Db", e);
 		}
 	}
+	
+	/*public List<Corso> getCorsiDelloStudente(int matricola){
+		try {
+			final String sql = "SELECT c.codins, c.crediti, c.nome, c.pd "
+					+ "FROM studente s, corso c, iscrizione i "
+					+ "WHERE s.matricola=i.matricola AND i.codins=c.codins AND s.matricola = ?";
+			List<Corso> corsi = new ArrayList<>();
+			
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+
+			st.setInt(1, matricola); 
+			
+			ResultSet rs = st.executeQuery();     /////////////////////////////////////////////////////////////////////////////////////////////////////
+			
+		}catch (SQLException e){
+			throw new RuntimeException("Errore Db", e);
+		}
+		return null;
+	}*/
 
 	/*
 	 * Data una matricola ed il codice insegnamento, iscrivi lo studente al corso.

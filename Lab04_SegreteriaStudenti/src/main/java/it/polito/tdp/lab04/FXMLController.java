@@ -5,6 +5,8 @@
 package it.polito.tdp.lab04;
 
 import java.net.URL;
+import java.sql.SQLDataException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -73,11 +75,23 @@ public class FXMLController {
     }
 
     @FXML
-    void handleCompleta(ActionEvent event) {
-    	int matr = Integer.parseInt(this.txtMatricola.getText()) ;
-    	Studente st = model.getDatiCompletamento2(matr);
-    	this.txtNome.setText(st.getNome());
-    	this.txtCognome.setText(st.getCognome());
+    void handleCompleta(ActionEvent event){
+    	try {
+    		int matr = Integer.parseInt(this.txtMatricola.getText()) ;
+        	Studente st = model.getDatiCompletamento2(matr);
+        	
+        	if(st==null) {
+        		this.txtRisultato.setText("Studente inesistente");
+        	}else {
+        		this.txtNome.setText(st.getNome());
+            	this.txtCognome.setText(st.getCognome());	
+        	}
+        	
+    	}catch (NumberFormatException nfe) {
+    		this.txtRisultato.setText("ERRORE: la matricola è composta da soli numeri");
+    		return;
+    	}
+    	
     }
 
     @FXML
@@ -87,7 +101,10 @@ public class FXMLController {
 
     @FXML
     void handleReset(ActionEvent event) {
-
+    	this.txtCognome.clear();
+    	this.txtNome.clear();
+    	this.txtMatricola.clear();
+    	this.txtRisultato.clear();
     }
     
     public void setModel(Model m) {
