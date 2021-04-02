@@ -132,7 +132,7 @@ public class FXMLController {
         	Studente st = model.getDatiCompletamento2(matr);
         	
         	if(st==null) {
-        		this.txtRisultato.appendText("Studente inesistente \n");
+        		this.txtRisultato.setText("Studente inesistente \n");
         	}else {
         		this.txtNome.setText(st.getNome());
             	this.txtCognome.setText(st.getCognome());	
@@ -148,6 +148,34 @@ public class FXMLController {
     @FXML
     void handleIscrivi(ActionEvent event) {
 
+    	try {
+    		Corso c = this.boxCorsi.getValue();
+        	int matr = Integer.parseInt(this.txtMatricola.getText()) ;
+    		
+    		if(c.getNome().equals("")) {
+        		this.txtRisultato.setText("ERRORE:Devi selezionare un corso specifico \n");          
+        		return;
+        	}
+    		
+    		if(!model.esisteStudente2(matr)) {
+        		this.txtRisultato.setText("ERRORE: studente inesistente \n");
+        		return;
+        	}
+    		
+    		if(model.inscriviStudenteACorso2(matr, c)) {
+    			this.txtRisultato.setText("Studente già iscritto al corso \n");
+    			
+    		}else {
+    			this.txtRisultato.setText("Iscrizione avvenuta con successo \n");
+    		}
+    		
+    	}catch (NullPointerException npe){
+    		this.txtRisultato.setText("ERRORE: devi selezionare un corso \n");
+    		return;
+    	}catch (NumberFormatException nfe) {
+    		this.txtRisultato.setText("ERRORE: la matricola è composta da soli numeri \n");
+    		return;
+    	}
     }
 
     @FXML
