@@ -48,6 +48,28 @@ public class FXMLController {
 
     @FXML
     void handleCercaCorsi(ActionEvent event) {
+    	try {
+    		int matr = Integer.parseInt(this.txtMatricola.getText()) ;
+        	if(!model.esisteStudente2(matr)) {
+        		this.txtRisultato.appendText("ERRORE: studente inesistente \n");
+        		return;
+        	}
+        	
+        	List<Corso> corsi = model.getCorsiDelloStudente2(matr);
+        	if(corsi.size()==0) {
+        		this.txtRisultato.appendText("Studente non iscritto a nessun corso \n");
+        		return;
+        	}else {
+        		for(Corso c: corsi) {
+        			this.txtRisultato.appendText("Corso "+c.getNome()+" con codice "+c.getCodins()+", crediti "+c.getCrediti()+" e del pd "+c.getPd()+"\n");
+        		}
+        	}
+        	
+    	}catch (NumberFormatException nfe) {
+    		this.txtRisultato.setText("ERRORE: la matricola è composta da soli numeri \n");
+    		return;
+    	}
+    	
 
     }
 
@@ -63,7 +85,7 @@ public class FXMLController {
 		    	this.txtRisultato.appendText(s.toString()+"\n");;
 		    }
     	}catch (NullPointerException npe){
-    		this.txtRisultato.setText("ERRORE: devi selezionare un corso");
+    		this.txtRisultato.setText("ERRORE: devi selezionare un corso \n");
     		return;
     	}
     }
@@ -81,14 +103,14 @@ public class FXMLController {
         	Studente st = model.getDatiCompletamento2(matr);
         	
         	if(st==null) {
-        		this.txtRisultato.setText("Studente inesistente");
+        		this.txtRisultato.setText("Studente inesistente \n");
         	}else {
         		this.txtNome.setText(st.getNome());
             	this.txtCognome.setText(st.getCognome());	
         	}
         	
     	}catch (NumberFormatException nfe) {
-    		this.txtRisultato.setText("ERRORE: la matricola è composta da soli numeri");
+    		this.txtRisultato.setText("ERRORE: la matricola è composta da soli numeri \n");
     		return;
     	}
     	

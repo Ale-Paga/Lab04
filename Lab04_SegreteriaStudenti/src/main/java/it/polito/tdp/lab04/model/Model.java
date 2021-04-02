@@ -28,5 +28,15 @@ public class Model {
 		CorsoDAO dao = new CorsoDAO();
 		return dao.getStudentiIscrittiAlCorso(corso);
 	}
+	
+	public boolean esisteStudente2(int matricola) {
+		StudenteDAO dao = new StudenteDAO();
+		return dao.esisteStudente(matricola);
+	}
+	
+	public List<Corso> getCorsiDelloStudente2(int matricola){
+		CorsoDAO dao = new CorsoDAO();
+		return dao.getCorsiDelloStudente(matricola);
+	}
 
 }

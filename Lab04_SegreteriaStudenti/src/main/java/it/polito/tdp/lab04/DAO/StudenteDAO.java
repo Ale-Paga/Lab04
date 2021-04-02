@@ -27,8 +27,10 @@ public class StudenteDAO {
 		st.setInt(1, matricola);
 		
 		ResultSet rs = st.executeQuery();
-		rs.first();
-		ris = new Studente(rs.getInt("matricola"), rs.getString("cognome"), rs.getString("nome"), rs.getString("CDS") );
+		if(rs.next()) {
+			ris = new Studente(rs.getInt("matricola"), rs.getString("cognome"), rs.getString("nome"), rs.getString("CDS") );
+		}		
+		rs.close();
 		st.close();
 		conn.close();
 		
@@ -38,6 +40,31 @@ public class StudenteDAO {
 			throw new RuntimeException("Errore Db", e);
 		} 
 		
+		
+	}
+	
+	public boolean esisteStudente(int matricola) {
+		String sql="SELECT * FROM studente WHERE matricola = ?";
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, matricola);
+			
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				rs.close();
+				st.close();
+				conn.close();
+				return true;
+			}else {
+				rs.close();
+				st.close();
+				conn.close();
+				return false;
+			}
+		}catch (SQLException e){
+			throw new RuntimeException(e);
+		}
 		
 	}
 }

@@ -41,6 +41,8 @@ public class CorsoDAO {
 				// Aggiungi il nuovo oggetto Corso alla lista corsi
 			}
 
+			rs.close();
+			st.close();
 			conn.close();
 			
 			return corsi;
@@ -67,6 +69,7 @@ public class CorsoDAO {
 				corsi.add(new Corso(rs.getString("codins"), rs.getInt("crediti"), rs.getString("nome"), rs.getInt("pd")));
 			}
 			
+			rs.close();
 			st.close();
 			conn.close();
 			
@@ -106,6 +109,7 @@ public class CorsoDAO {
 					ris.add(new Studente(rs.getInt("matricola"), rs.getString("cognome"), rs.getString("nome"), rs.getString("CDS")));
 				}
 				
+				rs.close();
 				st.close();
 				conn.close();
 				
@@ -124,6 +128,7 @@ public class CorsoDAO {
 					ris.add(new Studente(rs.getInt("matricola"), rs.getString("cognome"), rs.getString("nome"), rs.getString("CDS")));
 				}
 				
+				rs.close();
 				st.close();
 				conn.close();
 				
@@ -137,7 +142,7 @@ public class CorsoDAO {
 		}
 	}
 	
-	/*public List<Corso> getCorsiDelloStudente(int matricola){
+	public List<Corso> getCorsiDelloStudente(int matricola){
 		try {
 			final String sql = "SELECT c.codins, c.crediti, c.nome, c.pd "
 					+ "FROM studente s, corso c, iscrizione i "
@@ -149,13 +154,21 @@ public class CorsoDAO {
 
 			st.setInt(1, matricola); 
 			
-			ResultSet rs = st.executeQuery();     /////////////////////////////////////////////////////////////////////////////////////////////////////
+			ResultSet rs = st.executeQuery();
+			while(rs.next()){
+				corsi.add(new Corso(rs.getString("codins"), rs.getInt("crediti"), rs.getString("nome"), rs.getInt("pd")));
+			}
+			
+			rs.close();
+			st.close();
+			conn.close();
+			
+			return corsi;
 			
 		}catch (SQLException e){
 			throw new RuntimeException("Errore Db", e);
 		}
-		return null;
-	}*/
+	}
 
 	/*
 	 * Data una matricola ed il codice insegnamento, iscrivi lo studente al corso.
