@@ -51,7 +51,7 @@ public class FXMLController {
     	try {
     		int matr = Integer.parseInt(this.txtMatricola.getText()) ;
         	if(!model.esisteStudente2(matr)) {
-        		this.txtRisultato.appendText("ERRORE: studente inesistente \n");
+        		this.txtRisultato.setText("ERRORE: studente inesistente \n");
         		return;
         	}
         	
@@ -79,7 +79,7 @@ public class FXMLController {
 	    	Corso c = this.boxCorsi.getValue();
 	    	List<Studente> ris = model.getStudentiIscrittiAlCorso2(c);
 	    	if(c.getNome().equals("")) {
-	    		this.txtRisultato.setText("ELENCO DI TUTTE LE ISCRIZIONI A TUTTI I CORSI \n");
+	    		this.txtRisultato.appendText("ELENCO DI TUTTE LE ISCRIZIONI A TUTTI I CORSI \n");
 	    	}
 		    for(Studente s: ris) {
 		    	this.txtRisultato.appendText(s.toString()+"\n");;
@@ -93,6 +93,35 @@ public class FXMLController {
     @FXML
     void handleCercaSeIscritto(ActionEvent event) {
     	
+    	try {
+    		Corso c = this.boxCorsi.getValue();
+        	int matr = Integer.parseInt(this.txtMatricola.getText()) ;
+    		
+    		if(c.getNome().equals("")) {
+        		this.txtRisultato.setText("ERRORE:Devi selezionare un corso specifico \n");          
+        		return;
+        	}
+    		
+    		if(!model.esisteStudente2(matr)) {
+        		this.txtRisultato.setText("ERRORE: studente inesistente \n");
+        		return;
+        	}
+    		
+    		if(model.controllaIscrizioneStudenteCorso2(matr, c)) {
+    			this.txtRisultato.appendText("Lo studente con matricola "+matr+ " è iscritto al corso "+c.getNome()+"("+c.getCodins()+")"+"\n");
+    		}else {
+    			this.txtRisultato.appendText("Lo studente con matricola "+matr+ " non è iscritto al corso "+c.getNome()+"("+c.getCodins()+")"+"\n");
+    		}
+    		
+    	}catch (NullPointerException npe){
+    		this.txtRisultato.setText("ERRORE: devi selezionare un corso \n");
+    		return;
+    	}catch (NumberFormatException nfe) {
+    		this.txtRisultato.setText("ERRORE: la matricola è composta da soli numeri \n");
+    		return;
+    	}
+    	
+    	
 
     }
 
@@ -103,7 +132,7 @@ public class FXMLController {
         	Studente st = model.getDatiCompletamento2(matr);
         	
         	if(st==null) {
-        		this.txtRisultato.setText("Studente inesistente \n");
+        		this.txtRisultato.appendText("Studente inesistente \n");
         	}else {
         		this.txtNome.setText(st.getNome());
             	this.txtCognome.setText(st.getCognome());	

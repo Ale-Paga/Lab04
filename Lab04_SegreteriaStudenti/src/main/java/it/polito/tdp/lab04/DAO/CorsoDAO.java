@@ -169,6 +169,37 @@ public class CorsoDAO {
 			throw new RuntimeException("Errore Db", e);
 		}
 	}
+	
+	public boolean controllaIscrizioneStudenteCorso(int matricola, Corso corso) {
+		final String sql = "SELECT COUNT(*) AS tot "
+				+ "FROM iscrizione AS i "
+				+ "WHERE i.matricola= ? AND i.codins= ?";
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			
+			st.setInt(1, matricola);
+			st.setString(2, corso.getCodins());
+			
+			ResultSet rs = st.executeQuery();
+			rs.first();
+			if(rs.getInt("tot")==1) {
+				rs.close();
+				st.close();
+				conn.close();
+				return true;
+			}else {
+				rs.close();
+				st.close();
+				conn.close();
+				return false;
+			}
+			
+		}catch (SQLException e){
+			throw new RuntimeException("Errore Db", e);
+		}
+		
+	}
 
 	/*
 	 * Data una matricola ed il codice insegnamento, iscrivi lo studente al corso.
